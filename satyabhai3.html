@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Cosmos for Satyanchal - From Piyush</title>
+    <style>
+        body {
+            margin: 0;
+            min-height: 300vh;
+            font-family: 'Orbitron', sans-serif;
+            color: #00ffcc;
+            overflow-x: hidden;
+            position: relative;
+            background: #000;
+        }
+        #canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+        .container {
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 40px;
+        }
+        h1 {
+            font-size: 90px;
+            text-transform: uppercase;
+            text-shadow: 0 0 30px #00ffcc, 0 0 50px #ff007a;
+            animation: neonPulse 3s infinite alternate;
+            margin-top: 80px;
+            background: linear-gradient(45deg, rgba(0, 255, 204, 0.2), rgba(255, 0, 122, 0.2));
+            padding: 20px;
+            border-radius: 20px;
+            border: 2px solid #00ffcc;
+            box-shadow: 0 0 40px #00ffcc;
+        }
+        #start-btn {
+            padding: 30px 70px;
+            font-size: 30px;
+            background: linear-gradient(45deg, #00ffcc, #ff007a, #ffcc00);
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            border-radius: 25px;
+            box-shadow: 0 0 40px #00ffcc;
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-shadow: 0 0 10px #000;
+        }
+        #start-btn:hover {
+            transform: scale(1.2);
+            box-shadow: 0 0 60px #ff007a;
+        }
+        #content {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            padding-bottom: 200px;
+        }
+        .section {
+            margin: 80px 0;
+            padding: 40px;
+            background: linear-gradient(45deg, rgba(0, 0, 0, 0.9), rgba(20, 20, 20, 0.9));
+            border-radius: 20px;
+            width: 90%;
+            animation: fadeIn 2s ease-in;
+            box-shadow: 0 0 30px rgba(0, 255, 204, 0.6);
+            border: 2px solid #ff007a;
+        }
+        #message {
+            font-size: 40px;
+            min-height: 80px;
+            text-shadow: 0 0 20px #ff007a;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 15px;
+            border-radius: 15px;
+            border: 1px solid #00ffcc;
+        }
+        #code-box {
+            font-size: 22px;
+            color: #00ff00;
+            max-height: 300px;
+            overflow-y: auto;
+            animation: codeFlow 20s infinite linear;
+            background: rgba(0, 0, 0, 0.95);
+            padding: 25px;
+            border: 2px solid #00ffcc;
+            box-shadow: inset 0 0 20px #00ffcc, 0 0 30px #00ffcc;
+            border-radius: 10px;
+        }
+        #journey, #advice {
+            font-size: 24px;
+            line-height: 1.7;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 15px;
+            border: 1px solid #ff007a;
+        }
+        .interactive-btn {
+            margin: 20px;
+            padding: 20px 40px;
+            font-size: 22px;
+            background: linear-gradient(45deg, #ff007a, #00ffcc, #ffcc00);
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            border-radius: 15px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-shadow: 0 0 10px #000;
+        }
+        .interactive-btn:hover {
+            transform: scale(1.15);
+            box-shadow: 0 0 30px #00ffcc;
+        }
+        #terminal {
+            width: 85%;
+            height: 200px;
+            background: #000;
+            color: #00ff00;
+            padding: 25px;
+            font-size: 20px;
+            overflow-y: auto;
+            border: 3px solid #00ffcc;
+            border-radius: 10px;
+            margin-top: 25px;
+            box-shadow: 0 0 20px #00ffcc, inset 0 0 15px #00ffcc;
+        }
+        .holo-text {
+            position: absolute;
+            color: rgba(0, 255, 204, 0.3);
+            font-size: 30px;
+            pointer-events: none;
+            animation: floatText 10s infinite linear;
+        }
+
+        /* Animations */
+        @keyframes neonPulse {
+            0% { text-shadow: 0 0 30px #00ffcc, 0 0 50px #ff007a; }
+            100% { text-shadow: 0 0 50px #00ffcc, 0 0 70px #ff007a; }
+        }
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(40px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-20px, 20px); }
+            40% { transform: translate(20px, -20px); }
+            60% { transform: translate(-20px, 0); }
+            80% { transform: translate(20px, 0); }
+            100% { transform: translate(0); }
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        @keyframes codeFlow {
+            0% { transform: translateY(100%); }
+            100% { transform: translateY(-100%); }
+        }
+        @keyframes floatText {
+            0% { transform: translateY(100vh); opacity: 0; }
+            50% { opacity: 0.5; }
+            100% { transform: translateY(-100vh); opacity: 0; }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    <div class="container">
+        <h1>Digital Cosmos, Satyanchal!</h1>
+        <button id="start-btn" onclick="startExperience()">Enter the CodeVerse - From Piyush</button>
+        <div id="content">
+            <div class="section">
+                <div id="message"></div>
+            </div>
+            <div class="section">
+                <h2>Core Matrix - From Piyush</h2>
+                <div id="code-box">
+                    // Transcendent Journey for Satyanchal Chaudhary from Piyush Kashyap!<br>
+                    class CodeMaster {<br>
+                      constructor(name) {<br>
+                        this.name = "Satyanchal";<br>
+                        this.mentor = "Piyush Kashyap";<br>
+                        this.powers = ["logic", "innovation", "determination"];<br>
+                      }<br>
+                      transcend() {<br>
+                        console.log(`${this.mentor} to ${this.name}:`);<br>
+                        console.log("Unleash your code, conquer the cosmos!");<br>
+                        return "You’re a digital architect of the future!";<br>
+                      }<br>
+                    }<br>
+                    const satyanchal = new CodeMaster("Satyanchal");<br>
+                    satyanchal.transcend();<br>
+                </div>
+            </div>
+            <div class="section" id="journey">
+                <h2>Your Ascension to Mastery - Piyush Kashyap’s Codex</h2>
+                <p>1. <strong>Genesis:</strong> Command HTML, CSS, JS—forge a digital gateway. 2. <strong>Core Forge:</strong> Wield Python/Java—conquer 300 LeetCode challenges. 3. <strong>Synergy:</strong> Master Git—sync with the global codeverse. 4. <strong>Frameworks:</strong> Harness React, Node.js, Django—build 15 cosmic projects. 5. <strong>Logic Nexus:</strong> Master algorithms—sorting, graphs, dynamic programming. 6. <strong>Quantum Leap:</strong> Dive into AI/ML—craft intelligent systems. 7. <strong>Legacy:</strong> Contribute to open-source—etch your name in eternity. 8. <strong>Ascension:</strong> Claim a throne in tech—lead the future!</p>
+            </div>
+            <div class="section" id="advice">
+                <h2>Piyush Kashyap’s CodeVerse Laws</h2>
+                <p>1. Code 3 hours daily—forge your destiny. 2. Debug with precision—errors are portals to wisdom. 3. Recharge your core—burnout dims your light. 4. Seek the codeverse—Reddit, Discord, GitHub are your allies. 5. Mark your victories—every commit is a star. 6. Evolve with tech—AI, blockchain, quantum are your frontier. 7. Embrace the unknown—failure fuels transcendence. 8. Dream beyond—your code shapes the universe!</p>
+                <h3>Stay Resilient, Satyanchal</h3>
+                <p>Piyush Kashyap here: The codeverse can be a vortex—bugs, doubts, endless loops will test you. Don’t let the void consume you. Step back, connect with allies, celebrate every byte you craft. You’re a digital titan—your light will pierce the darkness. Rise, and code the cosmos!</p>
+            </div>
+            <div class="section">
+                <button class="interactive-btn" onclick="showTechTips()">Access Code Wisdom</button>
+                <button class="interactive-btn" onclick="runTerminal()">Activate CodeCore</button>
+                <button class="interactive-btn" onclick="spawnCodeRain()">Unleash Data Storm</button>
+                <div id="terminal"></div>
+            </div>
+        </div>
+    </div>
+
+    <audio id="bg-audio" autoplay loop>
+        <source src="https://www.freesound.org/data/previews/243/243020_71257-lq.mp3" type="audio/mp3">
+    </audio>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script>
+        // Immersive Digital Universe Background with Three.js
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('canvas'), alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+
+        // Lighting
+        const ambientLight = new THREE.AmbientLight(0x202020, 0.8);
+        scene.add(ambientLight);
+        const directionalLight = new THREE.DirectionalLight(0x00ffcc, 1);
+        directionalLight.position.set(0, 50, 50);
+        scene.add(directionalLight);
+
+        // Cosmic Background
+        const cosmosGeometry = new THREE.SphereGeometry(1000, 64, 64);
+        const cosmosMaterial = new THREE.MeshBasicMaterial({
+            color: 0x000000,
+            side: THREE.BackSide,
+            map: new THREE.TextureLoader().load('https://threejs.org/examples/textures/2294472375_24a3b8ef46_o.jpg')
+        });
+        const cosmos = new THREE.Mesh(cosmosGeometry, cosmosMaterial);
+        scene.add(cosmos);
+
+        // Glowing Circuit Ground
+        const groundGeometry = new THREE.PlaneGeometry(500, 500);
+        const groundMaterial = new THREE.MeshPhongMaterial({
+            color: 0x0a0a0a,
+            shininess: 150,
+            map: new THREE.TextureLoader().load('https://threejs.org/examples/textures/hardwood2_diffuse.jpg'),
+            emissive: 0x00ffcc,
+            emissiveIntensity: 0.2
+        });
+        const ground = new THREE.Mesh(groundGeometry, groundMaterial);
+        ground.rotation.x = -Math.PI / 2;
+        ground.position.y = -20;
+        scene.add(ground);
+
+        // Circuit Lines on Ground
+        const circuitGeometry = new THREE.BufferGeometry();
+        const circuitMaterial = new THREE.LineBasicMaterial({ color: 0x00ffcc, transparent: true, opacity: 0.8 });
+        const circuitVertices = [];
+        for (let i = 0; i < 100; i++) {
+            circuitVertices.push(
+                (Math.random() - 0.5) * 500, -19.9, (Math.random() - 0.5) * 500,
+                (Math.random() - 0.5) * 500, -19.9, (Math.random() - 0.5) * 500
+            );
+        }
+        circuitGeometry.setAttribute('position', new THREE.Float32BufferAttribute(circuitVertices, 3));
+        const circuits = new THREE.LineSegments(circuitGeometry, circuitMaterial);
+        scene.add(circuits);
+
+        // Floating Holographic Interfaces
+        const holoGeometry = new THREE.PlaneGeometry(20, 10);
+        const holoMaterial = new THREE.MeshBasicMaterial({
+            color: 0x00ffcc,
+            transparent: true,
+            opacity: 0.6,
+            side: THREE.DoubleSide
+        });
+        const holos = [];
+        for (let i = 0; i < 10; i++) {
+            const holo = new THREE.Mesh(holoGeometry, holoMaterial);
+            holo.position.set(
+                (Math.random() - 0.5) * 200,
+                Math.random() * 50 + 10,
+                (Math.random() - 0.5) * 200
+            );
+            holo.rotation.y = Math.random() * Math.PI;
+            holos.push(holo);
+            scene.add(holo);
+        }
+
+        // Data Particles
+        const particleGeometry = new THREE.BufferGeometry();
+        const particleMaterial = new THREE.PointsMaterial({ color: 0xff007a, size: 0.5, transparent: true });
+        const particleVertices = [];
+        for (let i = 0; i < 5000; i++) {
+            const x = (Math.random() - 0.5) * 1000;
+            const y = (Math.random() - 0.5) * 500;
+            const z = (Math.random() - 0.5) * 1000;
+            particleVertices.push(x, y, z);
+        }
+        particleGeometry.setAttribute('position', new THREE.Float32BufferAttribute(particleVertices, 3));
+        const particles = new THREE.Points(particleGeometry, particleMaterial);
+        scene.add(particles);
+
+        let backgroundType = 0;
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            // Animate Holographic Interfaces
+            holos.forEach(holo => {
+                holo.position.y += Math.sin(Date.now() * 0.001 + holo.position.x) * 0.1;
+                holo.material.opacity = 0.6 + Math.sin(Date.now() * 0.002) * 0.3;
+            });
+
+            // Animate Particles
+            particles.rotation.y += 0.0005;
+            particles.rotation.x += 0.0003;
+
+            // Animate Circuit Lines
+            circuits.material.opacity = 0.8 + Math.sin(Date.now() * 0.001) * 0.2;
+
+            renderer.render(scene, camera);
+        }
+
+        camera.position.z = 100;
+        camera.position.y = 30;
+        animate();
+
+        // Change Background Elements Every Minute
+        setInterval(() => {
+            backgroundType++;
+            const newColor = backgroundType % 3 === 0 ? 0x00ffcc : backgroundType % 3 === 1 ? 0xff007a : 0xffcc00;
+            holos.forEach(holo => {
+                holo.material.color.setHex(newColor);
+            });
+            particleMaterial.color.setHex(newColor);
+            circuitMaterial.color.setHex(newColor);
+            groundMaterial.emissive.setHex(newColor);
+        }, 60000);
+
+        // Floating Holographic Text
+        function spawnHoloText() {
+            const texts = ['CODE', 'DATA', 'ALGO', 'HACK', 'TECH'];
+            const text = document.createElement('div');
+            text.className = 'holo-text';
+            text.textContent = texts[Math.floor(Math.random() * texts.length)];
+            text.style.left = Math.random() * 100 + 'vw';
+            document.body.appendChild(text);
+            setTimeout(() => text.remove(), 10000);
+        }
+        setInterval(spawnHoloText, 2000);
+
+        // Typing Effect
+        function typeMessage(text, element, callback) {
+            let i = 0;
+            element.textContent = '';
+            function type() {
+                if (i < text.length) {
+                    element.textContent += text.charAt(i);
+                    i++;
+                    setTimeout(type, 30);
+                } else {
+                    callback();
+                }
+            }
+            type();
+        }
+
+        // Main Experience
+        function startExperience() {
+            const startBtn = document.getElementById('start-btn');
+            const content = document.getElementById('content');
+            startBtn.style.display = 'none';
+            content.style.display = 'flex';
+
+            const messages = [
+                "Satyanchal Chaudhary! Piyush Kashyap summons you to the CodeVerse! 🌌",
+                "Good Luck, Satyanchal! From Piyush Kashyap: May your code ignite the stars! 💾",
+                "To Satyanchal from Piyush Kashyap: Command the digital cosmos! 🖥️",
+                "Satyanchal Chaudhary, Piyush Kashyap says: No glitch can halt your ascent! ⚡",
+                "Future code master Satyanchal: Piyush Kashyap sees your cosmic reign! 🔮",
+                "Hey Satyanchal! Piyush Kashyap: Shape the universe with every line! 🌠",
+                "Good Luck, Satyanchal Chaudhary! Piyush Kashyap: Your logic is unstoppable! 🛠️",
+                "Piyush Kashyap to Satyanchal: Fuel your code with cosmic energy! ☄️",
+                "Satyanchal, from Piyush Kashyap: Let your algorithms echo in eternity! 🎇",
+                "Hey Satyanchal Chaudhary! Piyush Kashyap: Transcend the codeverse! 🌍",
+                "Satyanchal, Piyush Kashyap believes: Your code will light up the galaxy! ✨"
+            ];
+            let index = 0;
+            const messageDiv = document.getElementById('message');
+
+            function displayNextMessage() {
+                if (index < messages.length) {
+                    typeMessage(messages[index], messageDiv, () => {
+                        messageDiv.style.animation = index % 2 === 0 ? 'glitch 0.8s' : 'pulse 1.5s infinite';
+                        index++;
+                        setTimeout(displayNextMessage, 8000);
+                    });
+                } else {
+                    index = 0;
+                    setTimeout(displayNextMessage, 8000);
+                }
+            }
+            displayNextMessage();
+        }
+
+        // Tech Tips
+        function showTechTips() {
+            const tips = [
+                "Piyush Kashyap’s Law: Master Git—sync with the codeverse!",
+                "Piyush Kashyap says: Solve algorithms—forge your logic core!",
+                "Build cosmic projects—Piyush Kashyap sees your galaxy shine!",
+                "Piyush Kashyap’s advice: Master AI—command the future!",
+                "Document your code—Piyush Kashyap says clarity is power!",
+                "Join the codeverse—Piyush Kashyap urges you to connect!",
+                "Piyush Kashyap’s tip: Optimize—speed is your warp drive!",
+                "Test relentlessly—Piyush Kashyap knows glitches fear you!",
+                "Piyush Kashyap believes: Evolve daily—knowledge is infinite!",
+                "Teach the codeverse—Piyush Kashyap says sharing creates stars!"
+            ];
+            const randomTip = tips[Math.floor(Math.random() * tips.length)];
+            alert(randomTip);
+        }
+
+        // Terminal Simulator
+        function runTerminal() {
+            const terminal = document.getElementById('terminal');
+            terminal.innerHTML = '<div id="terminal-content"></div>';
+            const terminalContent = document.getElementById('terminal-content');
+            const commands = [
+                "Initializing CodeVerse Protocol...",
+                "Piyush Kashyap to Satyanchal: Activating transcendence modules...",
+                "Powers loaded: [Logic, Innovation, Determination]... 100%",
+                "Status: Code Master - Online!",
+                "Mission: Shape the digital cosmos - Begin!"
+            ];
+            let i = 0;
+            function typeCommand() {
+                if (i < commands.length) {
+                    terminalContent.innerHTML += `> ${commands[i]}<br>`;
+                    terminal.scrollTop = terminal.scrollHeight;
+                    i++;
+                    setTimeout(typeCommand, 1500);
+                }
+            }
+            typeCommand();
+        }
+
+        // Data Storm (Code Rain)
+        function spawnCodeRain() {
+            for (let i = 0; i < 30; i++) {
+                const binary = document.createElement('div');
+                binary.className = 'holo-text';
+                binary.textContent = Math.random() > 0.5 ? '1' : '0';
+                binary.style.left = Math.random() * 100 + 'vw';
+                binary.style.fontSize = Math.random() * 30 + 20 + 'px';
+                binary.style.color = `hsl(${Math.random() * 360}, 100%, 70%)`;
+                document.body.appendChild(binary);
+                setTimeout(() => binary.remove(), 10000);
+            }
+        }
+    </script>
+</body>
+</html>
